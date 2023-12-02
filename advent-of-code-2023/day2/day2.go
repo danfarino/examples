@@ -28,13 +28,9 @@ func parseGames(s string) []Game {
 			panic(line)
 		}
 
-		game := Game{
-			Num: gameNum,
-		}
+		game := Game{Num: gameNum}
 
-		subsets := strings.Split(after, "; ")
-
-		for _, subset := range subsets {
+		for _, subset := range strings.Split(after, "; ") {
 			subsetMap := map[string]int{}
 
 			for _, forColor := range strings.Split(subset, ", ") {
@@ -42,6 +38,7 @@ func parseGames(s string) []Game {
 				if !found {
 					panic(forColor)
 				}
+
 				colorCount, err := strconv.Atoi(colorCountStr)
 				if err != nil {
 					panic(colorCountStr)
@@ -62,10 +59,8 @@ func parseGames(s string) []Game {
 func processPart1(s string, bag map[string]int) int {
 	result := 0
 
-	games := parseGames(s)
-
 GAME:
-	for _, game := range games {
+	for _, game := range parseGames(s) {
 		for _, subset := range game.Subsets {
 			for color, colorCount := range subset {
 				if bag[color] < colorCount {
