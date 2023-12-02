@@ -23,10 +23,6 @@ func process(input string) int {
 var numWords = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
 func processLine(line string) int {
-	if line == "" {
-		return 0
-	}
-
 	num := 0
 
 	for i := range line {
