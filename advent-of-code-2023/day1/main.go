@@ -25,7 +25,7 @@ var numWords = []string{"one", "two", "three", "four", "five", "six", "seven", "
 func processLine(line string) int {
 	num := 0
 
-	for i := range line {
+	for i := 0; i < len(line); i++ {
 		if n, ok := getNum(line[i:]); ok {
 			num = n * 10
 			break
