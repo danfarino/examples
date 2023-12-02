@@ -7,21 +7,40 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//go:embed test1.txt
-var test1Input string
+//go:embed calibration1
+var calibration1 string
+
+//go:embed calibration2
+var calibration2 string
+
+//go:embed input1
+var input1 string
+
+//go:embed input2
+var input2 string
+
+func TestCalibration1(t *testing.T) {
+	result := process(calibration1, false)
+	assert.Equal(t, 142, result)
+}
 
 func Test1(t *testing.T) {
-	result := process(test1Input)
+	result := process(input1, false)
+	assert.Equal(t, 56397, result)
+}
+
+func TestCalibration2(t *testing.T) {
+	result := process(calibration2, true)
 	assert.Equal(t, 281, result)
 }
 
-func TestPuzzle(t *testing.T) {
-	result := process(puzzle)
-	assert.Equal(t, 55429, result)
+func Test2(t *testing.T) {
+	result := process(input2, true)
+	assert.Equal(t, 55701, result)
 }
 
 func BenchmarkProcessLine(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		process(puzzle)
+		process(input1, false)
 	}
 }
