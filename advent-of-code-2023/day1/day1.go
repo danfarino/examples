@@ -1,11 +1,8 @@
-package main
+package day1
 
 import (
 	"strings"
 )
-
-func main() {
-}
 
 func process(input string, useWords bool) int {
 	total := 0
