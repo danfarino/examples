@@ -23,12 +23,7 @@ func parseGames(s string) []Game {
 			panic(line)
 		}
 
-		gameNum, err := strconv.Atoi(strings.TrimPrefix(before, "Game "))
-		if err != nil {
-			panic(line)
-		}
-
-		game := Game{Num: gameNum}
+		game := Game{Num: mustParseInt(strings.TrimPrefix(before, "Game "))}
 
 		for _, subset := range strings.Split(after, "; ") {
 			subsetMap := map[string]int{}
@@ -39,12 +34,7 @@ func parseGames(s string) []Game {
 					panic(forColor)
 				}
 
-				colorCount, err := strconv.Atoi(colorCountStr)
-				if err != nil {
-					panic(colorCountStr)
-				}
-
-				subsetMap[color] = colorCount
+				subsetMap[color] = mustParseInt(colorCountStr)
 			}
 
 			game.Subsets = append(game.Subsets, subsetMap)
@@ -98,4 +88,12 @@ func processPart2(s string) int {
 	}
 
 	return totalPower
+}
+
+func mustParseInt(s string) int {
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
+	}
+	return n
 }
