@@ -39,8 +39,14 @@ func Test2(t *testing.T) {
 	assert.Equal(t, 55701, result)
 }
 
-func BenchmarkProcessLine(b *testing.B) {
+func Benchmark1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		process(input1, false)
+	}
+}
+
+func Benchmark2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		process(input2, true)
 	}
 }
