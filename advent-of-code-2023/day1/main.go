@@ -20,7 +20,7 @@ func process(input string) int {
 	return total
 }
 
-var numWords = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"}
+var numWords = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
 func processLine(line string) int {
 	if line == "" {
