@@ -17,7 +17,7 @@ func processPart1(s string) int {
 		numRanges := numRegexp.FindAllStringIndex(lines[i], -1)
 
 		for _, numRange := range numRanges {
-			sym, _, _ := findSymbolPos(false, lines, i, numRange[0], numRange[1])
+			sym, _ := findSymbolPos(false, lines, i, numRange[0], numRange[1])
 			if sym != 0 {
 				numStr := lines[i][numRange[0]:numRange[1]]
 				total += mustParseInt(numStr)
@@ -31,21 +31,16 @@ func processPart1(s string) int {
 func processPart2(s string) int {
 	lines := strings.Split(strings.TrimSpace(s), "\n")
 
-	type Position struct {
-		x int
-		y int
-	}
 	numsByStar := map[Position][]string{}
 
 	for i := range lines {
 		numRanges := numRegexp.FindAllStringIndex(lines[i], -1)
 
 		for _, numRange := range numRanges {
-			sym, symX, symY := findSymbolPos(true, lines, i, numRange[0], numRange[1])
+			sym, pos := findSymbolPos(true, lines, i, numRange[0], numRange[1])
 			if sym != 0 {
 				numStr := lines[i][numRange[0]:numRange[1]]
-				key := Position{symX, symY}
-				numsByStar[key] = append(numsByStar[key], numStr)
+				numsByStar[pos] = append(numsByStar[pos], numStr)
 			}
 		}
 	}
@@ -61,7 +56,12 @@ func processPart2(s string) int {
 	return total
 }
 
-func findSymbolPos(starOnly bool, lines []string, lineIdx, numRangeStart, numRangePastEnd int) (uint8, int, int) {
+type Position struct {
+	x int
+	y int
+}
+
+func findSymbolPos(starOnly bool, lines []string, lineIdx, numRangeStart, numRangePastEnd int) (uint8, Position) {
 	left := max(numRangeStart-1, 0)
 	right := min(numRangePastEnd, len(lines[lineIdx])-1)
 	top := max(lineIdx-1, 0)
@@ -71,12 +71,12 @@ func findSymbolPos(starOnly bool, lines []string, lineIdx, numRangeStart, numRan
 		for y := top; y <= bottom; y++ {
 			c := lines[y][x]
 			if (starOnly && c == '*') || (!starOnly && (c != '.' && (c < '0' || c > '9'))) {
-				return c, x, y
+				return c, Position{x, y}
 			}
 		}
 	}
 
-	return 0, 0, 0
+	return 0, Position{}
 }
 
 func mustParseInt(s string) int {
