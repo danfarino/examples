@@ -38,16 +38,12 @@ func parseWinCounts(s string) []int {
 
 		winningNums := map[string]struct{}{}
 
-		for _, numStr := range strings.Split(winningNumsStr, " ") {
-			numStr = strings.TrimSpace(numStr)
-			if numStr != "" {
-				winningNums[numStr] = struct{}{}
-			}
+		for _, numStr := range strings.Fields(winningNumsStr) {
+			winningNums[numStr] = struct{}{}
 		}
 
 		winCount := 0
-		for _, num := range strings.Split(myNumsStr, " ") {
-			num = strings.TrimSpace(num)
+		for _, num := range strings.Fields(myNumsStr) {
 			if _, ok := winningNums[num]; ok {
 				winCount++
 			}
