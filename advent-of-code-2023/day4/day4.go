@@ -10,9 +10,7 @@ func process(s string) (int, int) {
 	part1Total := 0
 
 	for _, winCount := range winCounts {
-		if winCount > 0 {
-			part1Total += 1 << (winCount - 1)
-		}
+		part1Total += 1 << winCount >> 1
 	}
 
 	part2Total := part2(winCounts, winCounts, 0)
