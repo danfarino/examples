@@ -65,7 +65,7 @@ linters:
 #    - nonamedreturns
     - nosprintfhostport
 #    - paralleltest
-    - prealloc
+    # - prealloc
     - predeclared
     - promlinter
     - reassign
@@ -76,9 +76,9 @@ linters:
 #    - tagliatelle
     - tenv
     - testableexamples
-    - testpackage
+    # - testpackage
     - thelper
-    - tparallel
+    # - tparallel
     - typecheck
     - unconvert
     - unparam
@@ -91,5 +91,5 @@ linters:
 
 linters-settings:
   stylecheck:
-    go: "1.21" # [eyecue-codemap:dGAKnLCwvgc]
+    go: "1.21"
     checks: ["all", "-ST1005"]
