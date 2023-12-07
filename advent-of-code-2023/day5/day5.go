@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"math"
 	"regexp"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -100,10 +99,6 @@ func parseInput(s string) Almanac {
 					Count:       mustParseInt(numStrs[2]),
 				})
 			}
-
-			sort.Slice(mapping.NumRanges, func(i, j int) bool {
-				return mapping.NumRanges[i].SourceStart < mapping.NumRanges[j].SourceStart
-			})
 
 			almanac.MappingFrom[fromName] = mapping
 			continue
