@@ -30,46 +30,23 @@ func processPart1(s string) int {
 func processPart2(s string) int {
 	seq, nodes := parse(s)
 
-	var startNodeIds []string
-
-	for nodeId := range nodes {
-		if strings.HasSuffix(nodeId, "A") {
-			startNodeIds = append(startNodeIds, nodeId)
-		}
-	}
-
 	var zNodeSteps []int
 
-	for _, nodeId := range startNodeIds {
-		type SeenKey struct {
-			SeqStep int
-			NodeId  string
+	for nodeId := range nodes {
+		if !strings.HasSuffix(nodeId, "A") {
+			continue
 		}
-		seen := map[SeenKey]struct{}{}
 
-		steps := 0
-
-		for {
-			seqStep := steps % len(seq)
-			steps++
-
-			seenKey := SeenKey{
-				SeqStep: seqStep,
-				NodeId:  nodeId,
-			}
-			if _, ok := seen[seenKey]; ok {
-				break
-			}
-			seen[seenKey] = struct{}{}
-
-			if seq[seqStep] == 'L' {
+		for steps := 0; ; steps++ {
+			if seq[steps%len(seq)] == 'L' {
 				nodeId = nodes[nodeId].Left
 			} else {
 				nodeId = nodes[nodeId].Right
 			}
 
 			if strings.HasSuffix(nodeId, "Z") {
-				zNodeSteps = append(zNodeSteps, steps)
+				zNodeSteps = append(zNodeSteps, steps+1)
+				break
 			}
 		}
 	}
