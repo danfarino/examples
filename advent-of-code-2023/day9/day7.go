@@ -6,10 +6,8 @@ import (
 )
 
 func process(s string, negative bool) int {
-	lines := parse(s)
-
 	sum := 0
-	for _, line := range lines {
+	for _, line := range parse(s) {
 		sum += predict(line, negative)
 	}
 	return sum
