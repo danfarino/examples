@@ -1,6 +1,7 @@
 package day9
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -8,12 +9,15 @@ import (
 func process(s string, negative bool) int {
 	sum := 0
 	for _, line := range parse(s) {
-		sum += predict(line, negative)
+		if negative {
+			slices.Reverse(line)
+		}
+		sum += predict(line)
 	}
 	return sum
 }
 
-func predict(line []int, negative bool) int {
+func predict(line []int) int {
 	diffs := make([]int, 0, len(line)-1)
 
 	diffsAllZero := true
@@ -25,19 +29,11 @@ func predict(line []int, negative bool) int {
 		diffs = append(diffs, diff)
 	}
 
-	if negative {
-		firstNum := line[0]
-		if diffsAllZero {
-			return firstNum
-		}
-		return firstNum - predict(diffs, negative)
-	}
-
 	lastNum := line[len(line)-1]
 	if diffsAllZero {
 		return lastNum
 	}
-	return lastNum + predict(diffs, negative)
+	return lastNum + predict(diffs)
 }
 
 func parse(s string) [][]int {
