@@ -14,22 +14,14 @@ type PointSet = map[Point]struct{}
 func process(s string) (int, int) {
 	lines := strings.Split(strings.TrimSpace(s), "\n")
 
-	curvePoints := findCurvePoints(lines)
-	insideCount := countInsidePoints(lines, curvePoints)
+	startPos := findStartPos(lines)
+	curvePoints := findCurvePoints(lines, startPos)
+	insideCount := countInsidePoints(lines, startPos, curvePoints)
 
 	return len(curvePoints) / 2, insideCount
 }
 
-func findCurvePoints(lines []string) PointSet {
-	var startPos Point
-	for i, line := range lines {
-		sIndex := strings.IndexByte(line, 'S')
-		if sIndex >= 0 {
-			startPos = Point{sIndex, i}
-			break
-		}
-	}
-
+func findCurvePoints(lines []string, startPos Point) PointSet {
 	curvePoints := PointSet{}
 	curvePoints[startPos] = struct{}{}
 
@@ -83,7 +75,17 @@ func findCurvePoints(lines []string) PointSet {
 	return curvePoints
 }
 
-func countInsidePoints(lines []string, curvePoints PointSet) int {
+func findStartPos(lines []string) Point {
+	for i, line := range lines {
+		sIndex := strings.IndexByte(line, 'S')
+		if sIndex >= 0 {
+			return Point{sIndex, i}
+		}
+	}
+	panic("failed to find start position")
+}
+
+func countInsidePoints(lines []string, startPos Point, curvePoints PointSet) int {
 	isOnPath := func(x, y int) bool {
 		_, ok := curvePoints[Point{x, y}]
 		return ok
@@ -97,9 +99,11 @@ func countInsidePoints(lines []string, curvePoints PointSet) int {
 			}
 
 			delta := -1
-			// If we see 'S' to the left of us, we'll search to the right instead (so that we don't have to understand
-			// what connector 'S' is masquerading as).
-			if strings.IndexByte(lines[y][0:x], 'S') >= 0 {
+			if startPos.Y != y {
+				if x > len(lines[0])/2 {
+					delta = 1
+				}
+			} else if startPos.X < x {
 				delta = 1
 			}
 
