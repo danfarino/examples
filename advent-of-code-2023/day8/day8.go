@@ -32,19 +32,19 @@ func processPart2(s string) int {
 
 	var zNodeSteps []int
 
-	for nodeId := range nodes {
-		if !strings.HasSuffix(nodeId, "A") {
+	for nodeID := range nodes {
+		if !strings.HasSuffix(nodeID, "A") {
 			continue
 		}
 
 		for steps := 0; ; steps++ {
 			if seq[steps%len(seq)] == 'L' {
-				nodeId = nodes[nodeId].Left
+				nodeID = nodes[nodeID].Left
 			} else {
-				nodeId = nodes[nodeId].Right
+				nodeID = nodes[nodeID].Right
 			}
 
-			if strings.HasSuffix(nodeId, "Z") {
+			if strings.HasSuffix(nodeID, "Z") {
 				zNodeSteps = append(zNodeSteps, steps+1)
 				break
 			}

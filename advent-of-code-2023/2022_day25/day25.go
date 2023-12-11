@@ -31,7 +31,7 @@ func encodeSnafu(num int) string {
 	for num > 0 {
 		n := (num % 5) + carry
 		if n > 2 {
-			n = n - 5
+			n -= 5
 			carry = 1
 		} else {
 			carry = 0
