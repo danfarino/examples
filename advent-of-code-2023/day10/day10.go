@@ -98,8 +98,8 @@ func countInsidePoints(lines []string, curvePoints PointSet) int {
 
 			delta := -1
 			// If we see 'S' to the left of us, we'll search to the right instead (so that we don't have to understand
-			// what connector 'S' is masquerading as). Also, search to the right if it's shorter.
-			if x > (len(lines[y])/2) || strings.IndexByte(lines[y][0:x], 'S') >= 0 {
+			// what connector 'S' is masquerading as).
+			if strings.IndexByte(lines[y][0:x], 'S') >= 0 {
 				delta = 1
 			}
 
