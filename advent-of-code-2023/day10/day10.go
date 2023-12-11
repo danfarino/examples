@@ -98,6 +98,9 @@ func countInsidePoints(lines []string, startPos Point, curvePoints PointSet) int
 				continue
 			}
 
+			// We'll search from the current X position to either the left or right side, whichever is shorter.
+			// Exception: for the line with the starting position 'S', search in the opposite direction from the 'S'
+			// (so that we don't have to understand the type of pipe that 'S' is masquerading as).
 			delta := -1
 			if startPos.Y != y {
 				if x > len(lines[0])/2 {
