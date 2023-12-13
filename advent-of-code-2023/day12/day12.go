@@ -79,11 +79,11 @@ func countFastRecurse(layout []byte, sizes []int, cache map[CacheKey]int) int {
 
 	springLen := 0
 
-COUNT_SPRINGS:
+CountSprings:
 	for i, c := range layout {
 		switch c {
 		case '.':
-			break COUNT_SPRINGS
+			break CountSprings
 		case '#':
 			springLen++
 			if springLen > sizes[0] {
