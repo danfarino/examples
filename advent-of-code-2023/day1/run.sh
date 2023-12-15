@@ -9,6 +9,6 @@ exec 3>&1
 {
     echo '```'
     echo '$ ./run.sh'
-    go test -bench=. -benchmem . | tee /dev/fd/3
+    go test -bench=. -benchmem "$@" . | tee /dev/fd/3
     echo '```'
 } > README.md
