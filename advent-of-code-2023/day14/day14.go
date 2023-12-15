@@ -22,13 +22,14 @@ func processPart2(s string, tiltCycleCount int) int {
 	for loopCycleLen := 0; loopCycleLen < tiltCycleCount; loopCycleLen++ {
 		doTiltCycle(grid)
 
-		hash := hashGrid(grid)
-		if loopCycleStart, ok := seen[hash]; ok {
+		key := getGridKey(grid)
+
+		if loopCycleStart, ok := seen[key]; ok {
 			loopCycleLen -= loopCycleStart
 			return seenWeights[loopCycleStart+(tiltCycleCount-loopCycleStart-1)%loopCycleLen]
 		}
 
-		seen[hash] = loopCycleLen
+		seen[key] = loopCycleLen
 		seenWeights = append(seenWeights, getWeight(grid))
 	}
 
@@ -52,7 +53,7 @@ func getWeight(grid [][]byte) int {
 	return total
 }
 
-func hashGrid(grid [][]byte) string {
+func getGridKey(grid [][]byte) string {
 	h := sha1.New()
 	for _, line := range grid {
 		h.Write(line)
