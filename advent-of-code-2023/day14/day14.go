@@ -74,12 +74,12 @@ func tilt(grid [][]byte, dir int) {
 		rollTo := 0
 
 		for y := 0; y < gridSize; y++ {
-			x2, y2 := translatePoint(dir, gridSize, x, y)
+			x2, y2 := rotatePoint(dir, gridSize, x, y)
 
 			switch grid[y2][x2] {
 			case 'O':
 				if rollTo < y {
-					newX, newY := translatePoint(dir, gridSize, x, rollTo)
+					newX, newY := rotatePoint(dir, gridSize, x, rollTo)
 					grid[newY][newX] = 'O'
 					grid[y2][x2] = '.'
 				}
@@ -91,7 +91,7 @@ func tilt(grid [][]byte, dir int) {
 	}
 }
 
-func translatePoint(dir, gridSize, x, y int) (int, int) {
+func rotatePoint(dir, gridSize, x, y int) (int, int) {
 	switch dir {
 	case 0:
 		return x, y
