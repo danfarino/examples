@@ -19,24 +19,20 @@ func processPart2(s string, tiltCycleCount int) int {
 	seen := map[string]int{}
 	var seenWeights []int
 
-	loopCycleLen := 0
-	loopCycleStart := 0
-	for ; loopCycleLen < tiltCycleCount; loopCycleLen++ {
+	for loopCycleLen := 0; loopCycleLen < tiltCycleCount; loopCycleLen++ {
 		doTiltCycle(grid)
 
 		hash := hashGrid(grid)
-		if seenAt, ok := seen[hash]; ok {
-			loopCycleStart = seenAt
+		if loopCycleStart, ok := seen[hash]; ok {
 			loopCycleLen -= loopCycleStart
-			seenWeights = seenWeights[loopCycleStart:]
-			break
+			return seenWeights[loopCycleStart+(tiltCycleCount-loopCycleStart-1)%loopCycleLen]
 		}
 
 		seen[hash] = loopCycleLen
 		seenWeights = append(seenWeights, getWeight(grid))
 	}
 
-	return seenWeights[(tiltCycleCount-loopCycleStart-1)%loopCycleLen]
+	panic("BAD")
 }
 
 func parseGrid(s string) [][]byte {
