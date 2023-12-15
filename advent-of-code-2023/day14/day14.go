@@ -2,7 +2,6 @@ package day14
 
 import (
 	"bytes"
-	"crypto/sha1"
 	"fmt"
 	"strings"
 )
@@ -54,11 +53,11 @@ func getWeight(grid [][]byte) int {
 }
 
 func getGridKey(grid [][]byte) string {
-	h := sha1.New()
+	var sb strings.Builder
 	for _, line := range grid {
-		h.Write(line)
+		sb.Write(line)
 	}
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return sb.String()
 }
 
 func doTiltCycle(grid [][]byte) {
