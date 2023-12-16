@@ -12,6 +12,26 @@ type PointHeading struct {
 	Heading Heading
 }
 
+func (ph PointHeading) Turn(h Heading) PointHeading {
+	ph.Heading = h
+	return ph
+}
+
+func (ph PointHeading) Advance() PointHeading {
+	switch ph.Heading {
+	case Up:
+		ph.Y -= 1
+	case Down:
+		ph.Y += 1
+	case Left:
+		ph.X -= 1
+	case Right:
+		ph.X += 1
+	}
+
+	return ph
+}
+
 type Heading int
 
 const (
@@ -70,57 +90,37 @@ func calcEnergy(lines []string, x, y int, heading Heading) int {
 
 		switch {
 		case c == '|' && (ph.Heading == Left || ph.Heading == Right):
-			pending = append(pending, advance(turn(ph, Up)))
-			pending = append(pending, advance(turn(ph, Down)))
+			pending = append(pending, ph.Turn(Up).Advance())
+			pending = append(pending, ph.Turn(Down).Advance())
 		case c == '-' && (ph.Heading == Up || ph.Heading == Down):
-			pending = append(pending, advance(turn(ph, Left)))
-			pending = append(pending, advance(turn(ph, Right)))
+			pending = append(pending, ph.Turn(Left).Advance())
+			pending = append(pending, ph.Turn(Right).Advance())
 		case c == '/':
 			switch ph.Heading {
 			case Up:
-				pending = append(pending, advance(turn(ph, Right)))
+				pending = append(pending, ph.Turn(Right).Advance())
 			case Down:
-				pending = append(pending, advance(turn(ph, Left)))
+				pending = append(pending, ph.Turn(Left).Advance())
 			case Left:
-				pending = append(pending, advance(turn(ph, Down)))
+				pending = append(pending, ph.Turn(Down).Advance())
 			case Right:
-				pending = append(pending, advance(turn(ph, Up)))
+				pending = append(pending, ph.Turn(Up).Advance())
 			}
 		case c == '\\':
 			switch ph.Heading {
 			case Down:
-				pending = append(pending, advance(turn(ph, Right)))
+				pending = append(pending, ph.Turn(Right).Advance())
 			case Up:
-				pending = append(pending, advance(turn(ph, Left)))
+				pending = append(pending, ph.Turn(Left).Advance())
 			case Right:
-				pending = append(pending, advance(turn(ph, Down)))
+				pending = append(pending, ph.Turn(Down).Advance())
 			case Left:
-				pending = append(pending, advance(turn(ph, Up)))
+				pending = append(pending, ph.Turn(Up).Advance())
 			}
 		default:
-			pending = append(pending, advance(ph))
+			pending = append(pending, ph.Advance())
 		}
 	}
 
 	return len(seenPoints)
-}
-
-func turn(ph PointHeading, heading Heading) PointHeading {
-	ph.Heading = heading
-	return ph
-}
-
-func advance(ph PointHeading) PointHeading {
-	switch ph.Heading {
-	case Up:
-		ph.Y -= 1
-	case Down:
-		ph.Y += 1
-	case Left:
-		ph.X -= 1
-	case Right:
-		ph.X += 1
-	}
-
-	return ph
 }
