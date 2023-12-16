@@ -4,9 +4,9 @@ goos: linux
 goarch: amd64
 pkg: github.com/danfarino/examples/advent-of-code-2023/day12
 cpu: Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
-BenchmarkSlow-8           	       1	1222186637 ns/op	518208992 B/op	19789819 allocs/op
-BenchmarkFast-8           	     481	   2387531 ns/op	  943435 B/op	    5471 allocs/op
-BenchmarkFastUnfolded-8   	      30	  39446518 ns/op	18053208 B/op	   27251 allocs/op
+BenchmarkSlow-8           	       1	1239590591 ns/op	518208648 B/op	19789818 allocs/op
+BenchmarkFast-8           	     446	   2366057 ns/op	  943397 B/op	    5471 allocs/op
+BenchmarkFastUnfolded-8   	      31	  37762411 ns/op	18051713 B/op	   27238 allocs/op
 PASS
-ok  	github.com/danfarino/examples/advent-of-code-2023/day12	6.134s
+ok  	github.com/danfarino/examples/advent-of-code-2023/day12	6.040s
 ```

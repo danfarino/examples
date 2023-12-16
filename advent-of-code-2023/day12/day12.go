@@ -64,7 +64,7 @@ func countFastRecurse(layout []byte, sizes []int, cache map[CacheKey]int) int {
 	if layout[0] == '.' {
 		cacheKey := CacheKey{
 			SizesLen:  len(sizes),
-			LayoutLen: len(layout) - 1,
+			LayoutLen: len(layout),
 		}
 
 		if cached, ok := cache[cacheKey]; ok {
