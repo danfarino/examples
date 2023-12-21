@@ -24,5 +24,5 @@ func (pq *PriorityQueue[T]) Len() int {
 }
 
 func (pq *PriorityQueue[T]) Pop() T {
-	return heap.Pop(&pq.items).(*pqItem).value.(T)
+	return heap.Pop(&pq.items).(*pqItem).value.(T) //nolint:forcetypeassert
 }

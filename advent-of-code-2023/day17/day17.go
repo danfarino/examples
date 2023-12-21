@@ -2,7 +2,6 @@ package day17
 
 import (
 	"math"
-	"slices"
 
 	"github.com/danfarino/examples/advent-of-code-2023/priorityqueue"
 )
@@ -33,7 +32,9 @@ type Point struct {
 
 type PathInfo struct {
 	Cost           int
-	Path           []Point
+	Point          Point
+	XRun           int
+	YRun           int
 	AvailableMoves Direction
 }
 
@@ -53,21 +54,24 @@ func getShortestPathCost(grid Grid, minMove, maxRun int) int {
 	cheapestGoalCost := math.MaxInt
 	cheapest := map[CheapestKey]int{}
 	pq := priorityqueue.New[PathInfo]()
-	pq.Push(PathInfo{0, []Point{start}, Up | Down | Left | Right}, 0)
+	pq.Push(PathInfo{0, start, 0, 0, Up | Down | Left | Right}, 0)
 
 	for pq.Len() > 0 {
-		pendingPoint := pq.Pop()
+		queueItem := pq.Pop()
 
-		cur := pendingPoint.Path[len(pendingPoint.Path)-1]
+		cur := queueItem.Point
 
 		for _, dir := range []Direction{Down, Right, Up, Left} {
-			if pendingPoint.AvailableMoves&dir == 0 {
+			if queueItem.AvailableMoves&dir == 0 {
 				continue
 			}
 
 			availableMoves := Up | Down | Left | Right
+			xRun := queueItem.XRun
+			yRun := queueItem.YRun
 
 			neighbor := Point{cur.X, cur.Y}
+
 			switch dir {
 			case Up:
 				if neighbor.Y == 0 {
@@ -75,37 +79,58 @@ func getShortestPathCost(grid Grid, minMove, maxRun int) int {
 				}
 				neighbor.Y--
 				availableMoves &^= Down
+				if yRun < 0 {
+					yRun--
+				} else {
+					yRun = -1
+				}
+				xRun = 0
 			case Down:
 				if neighbor.Y == ySize-1 {
 					continue
 				}
 				neighbor.Y++
 				availableMoves &^= Up
+				if yRun > 0 {
+					yRun++
+				} else {
+					yRun = 1
+				}
+				xRun = 0
 			case Left:
 				if neighbor.X == 0 {
 					continue
 				}
 				neighbor.X--
 				availableMoves &^= Right
+				if xRun < 0 {
+					xRun--
+				} else {
+					xRun = -1
+				}
+				yRun = 0
 			case Right:
 				if neighbor.X == xSize-1 {
 					continue
 				}
 				neighbor.X++
 				availableMoves &^= Left
+				if xRun > 0 {
+					xRun++
+				} else {
+					xRun = 1
+				}
+				yRun = 0
 			default:
 				panic("bug")
 			}
 
-			newCost := pendingPoint.Cost + grid.Get(neighbor)
+			newCost := queueItem.Cost + grid.Get(neighbor)
 
 			if newCost > cheapestGoalCost {
 				continue
 			}
 
-			neighborPath := append(slices.Clone(pendingPoint.Path), neighbor)
-
-			xRun, yRun := getRuns(neighborPath, maxRun)
 			switch {
 			case xRun == maxRun:
 				availableMoves &^= Right
@@ -142,7 +167,9 @@ func getShortestPathCost(grid Grid, minMove, maxRun int) int {
 				cheapest[key] = newCost
 				pq.Push(PathInfo{
 					Cost:           newCost,
-					Path:           neighborPath,
+					Point:          neighbor,
+					XRun:           xRun,
+					YRun:           yRun,
 					AvailableMoves: availableMoves,
 				}, goal.X-neighbor.X+goal.Y-neighbor.Y)
 			}
@@ -150,36 +177,4 @@ func getShortestPathCost(grid Grid, minMove, maxRun int) int {
 	}
 
 	return cheapestGoalCost
-}
-
-func getRuns(path []Point, maxRun int) (int, int) {
-	xRun := 0
-	yRun := 0
-
-	for i := 0; i < maxRun && i < len(path)-1; i++ {
-		p1 := path[len(path)-1-i]
-		p2 := path[len(path)-2-i]
-
-		if p1.X != p2.X {
-			if yRun != 0 {
-				break
-			}
-			if p1.X > p2.X {
-				xRun++
-			} else {
-				xRun--
-			}
-		} else {
-			if xRun != 0 {
-				break
-			}
-			if p1.Y > p2.Y {
-				yRun++
-			} else {
-				yRun--
-			}
-		}
-	}
-
-	return xRun, yRun
 }

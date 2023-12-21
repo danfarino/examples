@@ -2,7 +2,6 @@ package day17
 
 import (
 	_ "embed"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -43,81 +42,5 @@ func BenchmarkInputPart2(b *testing.B) {
 func BenchmarkInputPart1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		processPart2(input)
-	}
-}
-
-func TestRuns(t *testing.T) {
-	tests := []struct {
-		path []Point
-		xRun int
-		yRun int
-	}{
-		{
-			path: []Point{
-				{0, 0},
-				{1, 0},
-			},
-			xRun: 1,
-			yRun: 0,
-		},
-		{
-			path: []Point{
-				{0, 0},
-				{1, 0},
-				{2, 0},
-			},
-			xRun: 2,
-			yRun: 0,
-		},
-		{
-			path: []Point{
-				{0, 0},
-				{1, 0},
-				{2, 0},
-				{3, 0},
-				{4, 0},
-			},
-			xRun: 3,
-			yRun: 0,
-		},
-		{
-			path: []Point{
-				{0, 0},
-				{1, 0},
-				{2, 0},
-				{3, 0},
-				{3, 1},
-			},
-			xRun: 0,
-			yRun: 1,
-		},
-		{
-			path: []Point{
-				{10, 10},
-				{9, 10},
-				{8, 10},
-				{7, 10},
-			},
-			xRun: -3,
-			yRun: 0,
-		},
-		{
-			path: []Point{
-				{10, 10},
-				{10, 9},
-				{10, 8},
-				{10, 7},
-			},
-			xRun: 0,
-			yRun: -3,
-		},
-	}
-
-	for _, test := range tests {
-		t.Run(fmt.Sprintf("%v", test), func(t *testing.T) {
-			xRun, yRun := getRuns(test.path, 3)
-			assert.Equal(t, test.xRun, xRun)
-			assert.Equal(t, test.yRun, yRun)
-		})
 	}
 }

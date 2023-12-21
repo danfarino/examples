@@ -32,7 +32,7 @@ func (pq pqHeapInterface) Swap(i, j int) {
 
 func (pq *pqHeapInterface) Push(x any) {
 	n := len(*pq)
-	item := x.(*pqItem)
+	item := x.(*pqItem) //nolint:forcetypeassert
 	item.index = n
 	*pq = append(*pq, item)
 }
