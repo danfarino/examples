@@ -3,6 +3,7 @@ module github.com/danfarino/examples/advent-of-code-2023
 go 1.21.4
 
 require (
+	github.com/TwiN/go-color v1.4.1
 	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
 )
